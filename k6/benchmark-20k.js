@@ -11,7 +11,7 @@ export const options = {
   scenarios: {
     benchmark_20k: {
       executor: 'shared-iterations',
-      vus: 10,
+      vus: 6000,
       iterations: 20000,
       maxDuration: '10m',
     },
@@ -49,5 +49,5 @@ export default function () {
     'response under 60s': (r) => r.timings.duration < 60000,
   });
   
-  sleep(1);
+  sleep(0.1);
 }
