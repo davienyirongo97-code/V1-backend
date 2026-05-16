@@ -13,6 +13,14 @@ const PORT = process.env.PORT || 3006;
 app.use(cors());
 app.use(express.json());
 
+// Security Headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
 // Routes
 app.use('/api/results', resultsRouter);
 app.use('/api/grades',  gradesRouter);
