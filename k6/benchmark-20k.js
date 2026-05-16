@@ -1,7 +1,11 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
+import { Rate, Trend } from 'k6/metrics';
 import exec from 'k6/execution';
+
+const errorRate = new Rate('error_rate');
+const responseTime = new Trend('response_time');
 
 export const options = {
   scenarios: {
@@ -28,6 +32,10 @@ function getDobForStudent(i) {
 
 export default function () {
   const student = getNextStudent();
-  http.get(`http://localhost:3006/api/results?examNumber=${student.examNumber}&dob=${student.dob}`);
+  const res = http.get(`http://localhost:3006/api/results?examNumber=${student.examNumber}&dob=${student.dob}`);
+  
+  responseTime.add(res.timings.duration);
+  errorRate.add(res.status !== 200);
+  
   sleep(1);
 }
