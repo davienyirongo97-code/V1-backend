@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3006;
 
 app.use(cors());
 app.use(express.json());
+// app.use(compression()); // For response compression
 
 // Security Headers
 app.use((req, res, next) => {
