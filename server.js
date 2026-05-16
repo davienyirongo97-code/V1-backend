@@ -9,6 +9,7 @@ const { getStats } = require('./stats');
 
 const app = express();
 const PORT = process.env.PORT || 3006;
+const IS_PROD = process.env.NODE_ENV === 'production';
 
 app.use(cors());
 app.use(express.json());
