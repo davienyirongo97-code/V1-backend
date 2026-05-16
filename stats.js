@@ -6,6 +6,7 @@ const stats = {
   totalServed:    0,
   total4xx:       0,
   total500:       0,
+  total503:       0,
   total504:       0,
   activeRequests: 0,
   responseTimes:  [],
@@ -32,6 +33,8 @@ const recordSuccess = (ms) => {
 const recordError = (status, ms = 0) => {
   if (status === 504) {
     stats.total504++;
+  } else if (status === 503) {
+    stats.total503++;
   } else if (status >= 500) {
     stats.total500++;
   } else if (status >= 400) {
