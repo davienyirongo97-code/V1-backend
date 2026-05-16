@@ -10,6 +10,7 @@ const stats = {
   total504:       0,
   activeRequests: 0,
   responseTimes:  [],
+  methods:        { GET: 0, POST: 0, PUT: 0, DELETE: 0 },
   startTime:      Date.now(),
 };
 
@@ -17,9 +18,14 @@ const stats = {
 let lastCpuUsage = process.cpuUsage();
 let lastCpuTime  = Date.now();
 
-const recordRequest = () => {
+const recordRequest = (method = 'GET') => {
   stats.totalRequests++;
   stats.activeRequests++;
+  if (stats.methods[method] !== undefined) {
+    stats.methods[method]++;
+  } else {
+    stats.methods[method] = 1;
+  }
 };
 
 const recordSuccess = (ms) => {
@@ -96,6 +102,7 @@ const getStats = () => {
     uptimeSeconds:  Math.floor((Date.now() - stats.startTime) / 1000),
     ramUsedMB,
     cpuPercent,
+    methods:        stats.methods,
   };
 };
 
