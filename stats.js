@@ -60,12 +60,18 @@ const recordTimeout = () => recordError(504);
 const recordCrash   = () => recordError(500);
 
 const getStats = () => {
-  const times = stats.responseTimes;
+  const times = [...stats.responseTimes].sort((a, b) => a - b);
   const avgR = times.length > 0
     ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
     : 0;
 
-  const totalFailed = stats.total4xx + stats.total500 + stats.total504;
+  let p95 = 0, p99 = 0;
+  if (times.length > 0) {
+    p95 = times[Math.floor(times.length * 0.95)];
+    p99 = times[Math.floor(times.length * 0.99)];
+  }
+
+  const totalFailed = stats.total4xx + stats.total500 + stats.total503 + stats.total504;
   const total = stats.totalServed + totalFailed;
   const errR = total > 0 ? Math.round((totalFailed / total) * 100) : 0;
 
@@ -98,6 +104,8 @@ const getStats = () => {
     totalFailed:    totalFailed,
     activeRequests: stats.activeRequests,
     avgResponseMs:  avgR,
+    p95ResponseMs:  p95,
+    p99ResponseMs:  p99,
     errorRate:      errR,
     uptimeSeconds:  Math.floor((Date.now() - stats.startTime) / 1000),
     ramUsedMB,
