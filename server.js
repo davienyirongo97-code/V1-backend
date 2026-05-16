@@ -69,7 +69,12 @@ app.get('/api/stats', (req, res) => {
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', version: 'v1', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    version: 'v1', 
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // MANEB v1 Backend - Use with K6 load test scripts in /k6
