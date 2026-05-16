@@ -85,6 +85,9 @@ The test simulates a real results day (spike test) or a fixed iteration benchmar
 - **Users**: 6000 VUs
 - **Goal**: Sustained pressure over a specific time period.
 
+> [!NOTE]
+> Running 6,000 VUs requires significant local CPU and RAM. Ensure your machine has at least 16GB of RAM.
+
 ---
 
 ## What K6 Measures
