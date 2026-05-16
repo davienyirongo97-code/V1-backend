@@ -1,3 +1,11 @@
+/**
+ * MANEB V1 Analytics & Monitoring Module
+ * This module tracks real-time performance metrics for the analyst dashboard.
+ * - Response time percentiles (p95, p99)
+ * - Error distribution (4xx, 500, 503, 504)
+ * - Request rate history (60 min window)
+ * - Connection pool monitoring
+ */
 // In-memory stats tracker for v1
 const os = require('os');
 
