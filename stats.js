@@ -12,6 +12,7 @@ const stats = {
   responseTimes:  [],
   methods:        { GET: 0, POST: 0, PUT: 0, DELETE: 0 },
   requestHistory: [], // Last 60 minutes
+  maxResponseSize: 0,
   startTime:      Date.now(),
 };
 
@@ -38,10 +39,13 @@ const recordRequest = (method = 'GET') => {
   }
 };
 
-const recordSuccess = (ms) => {
+const recordSuccess = (ms, size = 0) => {
   stats.totalServed++;
   stats.activeRequests = Math.max(0, stats.activeRequests - 1);
   stats.responseTimes.push(ms);
+  if (stats.maxResponseSize < size) {
+    stats.maxResponseSize = size;
+  }
   // Keep last 500 for a better average under load
   if (stats.responseTimes.length > 500) stats.responseTimes.shift();
 };
