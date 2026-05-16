@@ -13,6 +13,7 @@ const stats = {
   methods:        { GET: 0, POST: 0, PUT: 0, DELETE: 0 },
   requestHistory: [], // Last 60 minutes
   maxResponseSize: 0,
+  poolExhaustionCount: 0,
   startTime:      Date.now(),
 };
 
@@ -67,6 +68,10 @@ const recordError = (status, ms = 0) => {
   }
   
   stats.activeRequests = Math.max(0, stats.activeRequests - 1);
+};
+
+const recordPoolExhaustion = () => {
+  stats.poolExhaustionCount++;
 };
 
 // Legacy support for the old names
@@ -128,5 +133,5 @@ const getStats = () => {
   };
 };
 
-module.exports = { recordRequest, recordSuccess, recordError, recordTimeout, recordCrash, getStats };
+module.exports = { recordRequest, recordSuccess, recordError, recordTimeout, recordCrash, recordPoolExhaustion, getStats };
 
