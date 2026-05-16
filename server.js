@@ -76,3 +76,10 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`MANEB v1 backend running on http://localhost:${PORT}`);
 });
+
+// Graceful Shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  // In a real app, close DB connections here
+  process.exit(0);
+});
