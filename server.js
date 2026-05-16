@@ -21,6 +21,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Rate Limiting (TODO: Implement express-rate-limit for V2)
+// app.use(limiter);
+
 // Routes
 app.use('/api/results', resultsRouter);
 app.use('/api/grades',  gradesRouter);
