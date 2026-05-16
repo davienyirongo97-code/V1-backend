@@ -43,12 +43,14 @@ const recordRequest = (method = 'GET') => {
 const recordSuccess = (ms, size = 0) => {
   stats.totalServed++;
   stats.activeRequests = Math.max(0, stats.activeRequests - 1);
-  stats.responseTimes.push(ms);
+  if (stats.responseTimes.length >= 1000) {
+    stats.responseTimes[Math.floor(Math.random() * 1000)] = ms;
+  } else {
+    stats.responseTimes.push(ms);
+  }
   if (stats.maxResponseSize < size) {
     stats.maxResponseSize = size;
   }
-  // Keep last 500 for a better average under load
-  if (stats.responseTimes.length > 500) stats.responseTimes.shift();
 };
 
 const recordError = (status, ms = 0) => {
@@ -63,8 +65,11 @@ const recordError = (status, ms = 0) => {
   }
   
   if (ms > 0) {
-    stats.responseTimes.push(ms);
-    if (stats.responseTimes.length > 500) stats.responseTimes.shift();
+    if (stats.responseTimes.length >= 1000) {
+      stats.responseTimes[Math.floor(Math.random() * 1000)] = ms;
+    } else {
+      stats.responseTimes.push(ms);
+    }
   }
   
   stats.activeRequests = Math.max(0, stats.activeRequests - 1);
