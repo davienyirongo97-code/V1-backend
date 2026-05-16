@@ -13,7 +13,12 @@ export const options = {
       executor: 'shared-iterations',
       vus: 10,
       iterations: 20000,
+      maxDuration: '10m',
     },
+  },
+  thresholds: {
+    http_req_duration: ['p(95)<30000'],
+    error_rate: ['rate<0.5'],
   },
 };
 
@@ -36,6 +41,13 @@ export default function () {
   
   responseTime.add(res.timings.duration);
   errorRate.add(res.status !== 200);
+  
+  check(res, {
+    'status is 200': (r) => r.status === 200,
+    'has student name': (r) => r.status === 200 && r.json('student.name') !== undefined,
+    'has 9 results': (r) => r.status === 200 && r.json('results') && r.json('results').length === 9,
+    'response under 60s': (r) => r.timings.duration < 60000,
+  });
   
   sleep(1);
 }
