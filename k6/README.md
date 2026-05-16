@@ -75,7 +75,7 @@ The test simulates a real results day (spike test) or a fixed iteration benchmar
 
 **Benchmark (20k):**
 - **Type**: Iteration-based
-- **Requests**: 20,000 total
+- **Requests**: 20,000 total (shared across all VUs)
 - **Users**: 6000 VUs
 - **Goal**: Measure performance across a fixed volume of traffic.
 
