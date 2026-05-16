@@ -73,7 +73,9 @@ app.get('/health', (req, res) => {
     status: 'ok', 
     version: 'v1', 
     uptime: process.uptime(),
-    timestamp: new Date().toISOString() 
+    timestamp: new Date().toISOString(),
+    // TODO: Add database connection check for V2
+    database: 'connected'
   });
 });
 
