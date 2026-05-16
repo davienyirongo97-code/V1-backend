@@ -118,6 +118,10 @@ const getStats = () => {
   const memUsage = process.memoryUsage();
   const ramUsedMB = Math.round(memUsage.rss / 1024 / 1024);
 
+  let healthStatus = 'Healthy';
+  if (errR > 20 || avgR > 5000 || cpuPercent > 80) healthStatus = 'Critical';
+  else if (errR > 5 || avgR > 1000 || cpuPercent > 50) healthStatus = 'Degraded';
+
   return {
     totalRequests:  stats.totalRequests,
     totalServed:    stats.totalServed,
@@ -134,6 +138,7 @@ const getStats = () => {
     uptimeSeconds:  Math.floor((Date.now() - stats.startTime) / 1000),
     ramUsedMB,
     cpuPercent,
+    healthStatus,
     methods:        stats.methods,
   };
 };
