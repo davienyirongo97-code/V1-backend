@@ -11,6 +11,7 @@ const stats = {
   activeRequests: 0,
   responseTimes:  [],
   methods:        { GET: 0, POST: 0, PUT: 0, DELETE: 0 },
+  requestHistory: [], // Last 60 minutes
   startTime:      Date.now(),
 };
 
@@ -25,6 +26,15 @@ const recordRequest = (method = 'GET') => {
     stats.methods[method]++;
   } else {
     stats.methods[method] = 1;
+  }
+  
+  const now = Math.floor(Date.now() / 60000); // Current minute
+  const last = stats.requestHistory[stats.requestHistory.length - 1];
+  if (last && last.minute === now) {
+    last.count++;
+  } else {
+    stats.requestHistory.push({ minute: now, count: 1 });
+    if (stats.requestHistory.length > 60) stats.requestHistory.shift();
   }
 };
 
