@@ -10,8 +10,8 @@ export const options = {
   scenarios: {
     constant_load: {
       executor: 'constant-vus',
-      vus: 10,
-      duration: '10s',
+      vus: 6000,
+      duration: '4m',
     },
   },
 };
