@@ -1,3 +1,11 @@
+/**
+ * MANEB V1 Server Infrastructure
+ * Managed by DevOps Team
+ * - Security Header Management
+ * - Health & Uptime Monitoring
+ * - Graceful Shutdown Logic
+ * - Request Logging
+ */
 const express = require('express');
 const cors = require('cors');
 const os = require('os');
