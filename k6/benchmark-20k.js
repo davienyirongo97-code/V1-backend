@@ -1,6 +1,8 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
+import exec from 'k6/execution';
+
 export const options = {
   scenarios: {
     benchmark_20k: {
@@ -11,7 +13,21 @@ export const options = {
   },
 };
 
+function getNextStudent() {
+  const i = (exec.scenario.iterationInTest % 50000) + 1;
+  const examNumber = String(i);
+  const dob = getDobForStudent(i);
+  return { examNumber, dob };
+}
+
+function getDobForStudent(i) {
+  const date = new Date('2004-01-01');
+  date.setDate(date.getDate() + (i - 1));
+  return date.toISOString().split('T')[0];
+}
+
 export default function () {
-  http.get('http://localhost:3006/api/results?examNumber=1&dob=2004-01-01');
+  const student = getNextStudent();
+  http.get(`http://localhost:3006/api/results?examNumber=${student.examNumber}&dob=${student.dob}`);
   sleep(1);
 }
