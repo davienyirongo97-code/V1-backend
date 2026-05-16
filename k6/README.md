@@ -55,19 +55,35 @@ k6 run --out json=k6/results-v2.json k6/spike-test.js
 k6 run --out json=k6/results-v3.json k6/spike-test.js
 ```
 
+**Benchmark Test (20k Requests):**
+```bash
+k6 run k6/benchmark-20k.js
+```
+
 ---
 
 ## Test Stages
 
-The test simulates a real results day:
+The test simulates a real results day (spike test) or a fixed iteration benchmark:
 
+**Spike Test:**
 | Stage | Duration | Users | Description |
 |---|---|---|---|
 | Ramp up | 3 minutes | 0 → 5000 | Students start checking results |
 | Peak | 5 minutes | 5000 | Maximum load — results day rush |
 | Ramp down | 2 minutes | 5000 → 0 | Traffic dies down |
 
-Total test duration: 10 minutes per version.
+**Benchmark (20k):**
+- **Type**: Iteration-based
+- **Requests**: 20,000 total
+- **Users**: 6000 VUs
+- **Goal**: Measure performance across a fixed volume of traffic.
+
+**Constant Load (4m):**
+- **Type**: Duration-based
+- **Duration**: 4 minutes
+- **Users**: 6000 VUs
+- **Goal**: Sustained pressure over a specific time period.
 
 ---
 
@@ -99,6 +115,8 @@ The failing numbers prove the system needs optimisation.
 | File | Description |
 |---|---|
 | `spike-test.js` | Main test script — used for all versions |
+| `benchmark-20k.js` | Fixed request benchmark — stops after 20,000 requests |
+| `constant-load.js` | 4-minute sustained load with 6,000 users |
 | `results-v1.json` | Results from testing v1 (generated after running) |
 | `results-v2.json` | Results from testing v2 (generated after running) |
 | `results-v3.json` | Results from testing v3 (generated after running) |
